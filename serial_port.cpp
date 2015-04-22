@@ -58,10 +58,6 @@ serial_port::serial_port() {
   _port_name = NULL;
 }
 
-char * serial_port::name() {
-  return _port_name;
-}
-
 void serial_port::name(const char * name) {
   if (is_valid_port(name)) {
     _port_name = comports[get_port_index(name)];
@@ -69,10 +65,6 @@ void serial_port::name(const char * name) {
   else {
     _port_name = NULL;
   }
-}
-
-int serial_port::baudrate() {
-  return _baudrate;
 }
 
 void serial_port::baudrate(int rate) {
@@ -217,6 +209,7 @@ void serial_port::close() {
     perror("unable to close serial port");
     return;
   }
+  _port_fd = INVALID_PORT;
 }
 
 /*
@@ -255,6 +248,12 @@ char comports[RS232_MAX_PORT_INDEX+1][10] = {
 
 serial_port::serial_port() {
   _port_handle = INVALID_HANDLE_VALUE;
+  _port_name = NULL;
+}
+
+bool serial_port::open(const char * name, int baud) {
+  sscanf(name, "COM%d", &_port_number);
+  return (this->open(_port_number, baud));
 }
 
 bool serial_port::open(int comport_number, int baud) {
@@ -264,6 +263,7 @@ bool serial_port::open(int comport_number, int baud) {
   }
 
   sprintf(_baud_str, "baud=%d data=8 parity=N stop=1", baud);
+  _baudrate = baud;
 
   _port_handle = CreateFileA(comports[comport_number],
                       GENERIC_READ|GENERIC_WRITE,
@@ -285,12 +285,14 @@ bool serial_port::open(int comport_number, int baud) {
   if(!BuildCommDCBA(_baud_str, &port_settings)) {
     printf("unable to set comport dcb settings\n");
     CloseHandle(_port_handle);
+    _port_handle = INVALID_HANDLE_VALUE;
     return(false);
   }
 
   if(!SetCommState(_port_handle, &port_settings)) {
     printf("unable to set comport cfg settings\n");
     CloseHandle(_port_handle);
+    _port_handle = INVALID_HANDLE_VALUE; //not sure this is required
     return(false);
   }
 
@@ -308,6 +310,7 @@ bool serial_port::open(int comport_number, int baud) {
     return(false);
   }
 
+  _port_name = comports[_port_number];
   return(true);
 }
 
@@ -354,6 +357,12 @@ int serial_port::send(unsigned char *buf, int size) {
 
 void serial_port::close() {
   CloseHandle(_port_handle);
+  _port_handle = INVALID_HANDLE_VALUE;
+  _port_name = NULL;
+}
+
+bool serial_port::is_open() {
+  return (_port_handle != INVALID_HANDLE_VALUE);
 }
 
 
@@ -392,6 +401,14 @@ int serial_port::get_port_index (const char *name) {
   }
   return (-1);
 }//end 
+
+char * serial_port::name() {
+  return _port_name;
+}
+
+int serial_port::baudrate() {
+  return _baudrate;
+}
 
 #if 0
 /* sends a string to serial port */

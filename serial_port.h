@@ -60,15 +60,16 @@
 class serial_port {
   private:
     int _baudrate;
+    char * _port_name;
 
 #ifdef __linux__
     int _port_fd;
-    char * _port_name;
     struct termios new_port_settings;
     struct termios old_port_settings;
 #else
     HANDLE _port_handle;
     char _baud_str[64];
+    int _port_number;
 #endif
     int _error;
 
