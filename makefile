@@ -8,6 +8,7 @@ CXXFLAGS = -Wall -g -O3
 ifeq "$(HOST)" "Cygwin"
 CC = i686-pc-mingw32-gcc
 CXX = i686-pc-mingw32-g++
+AR = i686-pc-mingw32-ar
 
 CXXFLAGS += -DWIN32
 
@@ -19,9 +20,10 @@ CC = gcc
 CXX = g++
 AR = ar
 
-AR_FLAGS = cvq
 LDFLAGS = -static-libgcc
 endif
+
+AR_FLAGS = cvq
 
 CFLAGS = $(CXXFLAGS) -std=c99 
 

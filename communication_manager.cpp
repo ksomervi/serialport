@@ -23,10 +23,20 @@
 #include <cstdlib> 
 #include <cstring>      /* String function definitions */
 #include <unistd.h>     /* UNIX standard function definitions */
+
 #include <fcntl.h>      /* File control definitions */
 #include <cerrno>       /* Error number definitions */
+
+#ifdef __linux__
 #include <termios.h>    /* POSIX terminal control definitions */
 #include <sys/ioctl.h>
+
+#else
+
+#include <windows.h>
+  // If usleep needs to be replaced, here's a gist for it:
+  //   https://gist.github.com/ngryman/6482577
+#endif
 
 #include "communication_manager.h"
 

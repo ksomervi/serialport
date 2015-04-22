@@ -257,10 +257,10 @@ serial_port::serial_port() {
   _port_handle = INVALID_HANDLE_VALUE;
 }
 
-int serial_port::open(int comport_number, int baud) {
+bool serial_port::open(int comport_number, int baud) {
   if((comport_number>15)||(comport_number<0)) {
     printf("illegal comport number\n");
-    return(1);
+    return(false);
   }
 
   sprintf(_baud_str, "baud=%d data=8 parity=N stop=1", baud);
@@ -275,7 +275,7 @@ int serial_port::open(int comport_number, int baud) {
 
   if(_port_handle == INVALID_HANDLE_VALUE) {
     printf("unable to open comport\n");
-    return(1);
+    return(false);
   }
 
   DCB port_settings;
@@ -285,13 +285,13 @@ int serial_port::open(int comport_number, int baud) {
   if(!BuildCommDCBA(_baud_str, &port_settings)) {
     printf("unable to set comport dcb settings\n");
     CloseHandle(_port_handle);
-    return(1);
+    return(false);
   }
 
   if(!SetCommState(_port_handle, &port_settings)) {
     printf("unable to set comport cfg settings\n");
     CloseHandle(_port_handle);
-    return(1);
+    return(false);
   }
 
   COMMTIMEOUTS Cptimeouts;
@@ -305,10 +305,10 @@ int serial_port::open(int comport_number, int baud) {
   if(!SetCommTimeouts(_port_handle, &Cptimeouts)) {
     printf("unable to set comport time-out settings\n");
     CloseHandle(_port_handle);
-    return(1);
+    return(false);
   }
 
-  return(0);
+  return(true);
 }
 
 
