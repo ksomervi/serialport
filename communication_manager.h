@@ -28,7 +28,7 @@
 #define INVALID_PORT -1
 #endif
 
-#define CM_APP_DEBUG 1
+//#define CM_APP_DEBUG 1
 
 //TODO:
 // - Add poll() function that tests for available characters, but does leaves
