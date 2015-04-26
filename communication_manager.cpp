@@ -147,3 +147,7 @@ int communication_manager::receive(uint8_t* buf, int len, bool dbg) {
   return (i);
 }
 
+port_list communication_manager::get_available_ports() {
+  return _sp->available_ports();
+}//end get_available_ports()
+

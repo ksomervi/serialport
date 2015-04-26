@@ -30,7 +30,6 @@
 
 #ifdef __linux__   /* Linux */
 
-
 static char comports[RS232_MAX_PORT_INDEX+1][13] = {
   "/dev/ttyS0", "/dev/ttyS1", "/dev/ttyS2", "/dev/ttyS3",
   "/dev/ttyS4", "/dev/ttyS5", "/dev/ttyS6", "/dev/ttyS7",
@@ -384,7 +383,7 @@ int IsCTSEnabled(int comport_number) {
 
 bool serial_port::is_valid_port (const char *name) {
   // get index into comports
-  for (int i=RS232_MIN_PORT_INDEX; i<RS232_MAX_PORT_INDEX; i++) {
+  for (int i=RS232_MIN_PORT_INDEX; i<=RS232_MAX_PORT_INDEX; i++) {
     if (strcmp(name, comports[i]) == 0) {
       return (true);
     }
@@ -394,7 +393,7 @@ bool serial_port::is_valid_port (const char *name) {
 
 int serial_port::get_port_index (const char *name) {
   // get index into comports
-  for (int i=RS232_MIN_PORT_INDEX; i<RS232_MAX_PORT_INDEX; i++) {
+  for (int i=RS232_MIN_PORT_INDEX; i<=RS232_MAX_PORT_INDEX; i++) {
     if (strcmp(name, comports[i]) == 0) {
       return (i);
     }
@@ -410,11 +409,28 @@ int serial_port::baudrate() {
   return _baudrate;
 }
 
-#if 0
-/* sends a string to serial port */
-void cprintf(serial_port *p, const char *text) {
-  while(*text != 0) {
-    p->send(*(text++));
-  }
-}
+port_list serial_port::available_ports() {
+  port_list available;
+#ifdef _WIN32
+  // Needed for QueryDosDevice
+  char path[128];
 #endif
+  int n = 0;
+ 
+  // List the available serial ports
+  for (int p=RS232_MIN_PORT_INDEX; p<=RS232_MAX_PORT_INDEX; p++) {
+#ifdef _WIN32
+    n = QueryDosDevice(comports[p], path, sizeof(path));
+#else
+    n = access(comports[p], F_OK) + 1;
+#endif
+
+    if (n>0) {
+      available.push_back(comports[p]);
+    }
+  }//end for(p)
+
+  return available;
+}
+
+

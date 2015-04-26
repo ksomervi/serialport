@@ -25,12 +25,16 @@
 // This version of GPL is at 
 //       http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 //
+// TODO:
+//   - Fix the WIN32 defines (#if defined(_WIN32) || defined(WIN32) )
 
 #ifndef SERIAL_PORT_H
 #define SERIAL_PORT_H
 
 #include <cstdio>
 #include <cstring>
+#include <vector>
+typedef std::vector< char* > port_list;
 
 #ifdef __linux__
 
@@ -87,11 +91,10 @@ class serial_port {
     int send(unsigned char);
     int send(unsigned char *, int);
     void close();
-    //void cprintf(int, const char *);
-    //int IsCTSEnabled(int);
 
     bool is_valid_port(const char *);
     int get_port_index(const char *);
+    port_list available_ports();
 
 };
 

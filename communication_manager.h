@@ -55,6 +55,7 @@ class communication_manager {
     int send(const uint8_t* buf, int len);
     int receive(uint8_t* buf, int len, bool dbg=false);
 
+    port_list get_available_ports();
 };
 
 #endif // !defined (COMM_MANAGER_H)
