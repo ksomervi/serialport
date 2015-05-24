@@ -143,7 +143,7 @@ int communication_manager::receive(uint8_t* buf, int len, bool dbg) {
   if (tries == 100) {       
     printf("too many tries in in receive()\n");
   }
-  buf[i] = 0;  // null terminate the string
+  //buf[i] = 0;  // null terminate the string
   return (i);
 }
 
