@@ -5,12 +5,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
@@ -39,6 +39,7 @@ class communication_manager {
 
   private:
     serial_port * _sp;
+    int _max_retries;
 
   public:
     communication_manager();
@@ -54,6 +55,7 @@ class communication_manager {
     //int send(const uint8_t b);
     int send(const uint8_t* buf, int len);
     int receive(uint8_t* buf, int len, bool dbg=false);
+    int poll(uint8_t* buf, bool dbg=false);
 
     port_list get_available_ports();
 };

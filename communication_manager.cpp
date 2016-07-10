@@ -42,6 +42,7 @@
 
 communication_manager::communication_manager() {
   _sp = NULL;
+  _max_retries = 1000; //hack
 }
 
 communication_manager::~communication_manager() {
@@ -49,6 +50,7 @@ communication_manager::~communication_manager() {
     delete _sp;
     _sp = NULL;
   }
+  _max_retries = 1000; //hack
 }
 
 // takes the string name of the serial port (e.g. "/dev/tty.usbserial","COM1")
@@ -121,7 +123,7 @@ int communication_manager::receive(uint8_t* buf, int len, bool dbg) {
   int i = 0;
   int tries = 0;
 
-  while (i<len && tries<100) {
+  while (i<len && tries<_max_retries) {
     int n = _sp->poll(&b, 1);  // read a char at a time
     if (n==-1) {
       printf("Can't read port in receive()\n");
@@ -140,11 +142,15 @@ int communication_manager::receive(uint8_t* buf, int len, bool dbg) {
     }
   }
 
-  if (tries == 100) {       
-    printf("too many tries in in receive()\n");
+  if (tries == _max_retries) {
+    printf("too many tries in receive()\n");
   }
   //buf[i] = 0;  // null terminate the string
   return (i);
+}
+
+int communication_manager::poll(uint8_t* buf, bool dbg) {
+  return(_sp->poll((unsigned char*)buf, 1));
 }
 
 port_list communication_manager::get_available_ports() {
