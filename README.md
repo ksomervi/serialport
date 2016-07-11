@@ -41,6 +41,7 @@ This package includes two primary classes:
 
         int send(const uint8_t* buf, int len);
         int receive(uint8_t* buf, int len, bool dbg=false);
+        int poll(uint8_t* buf, bool dbg=false);
 
     };
 

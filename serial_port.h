@@ -22,7 +22,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 //
-// This version of GPL is at 
+// This version of GPL is at
 //       http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 //
 // TODO:

@@ -5,12 +5,12 @@
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,
@@ -20,7 +20,7 @@
 // Date: Thu Apr  9 15:07:52 EDT 2015
 
 #include <cstdio>       /* Standard input/output definitions */
-#include <cstdlib> 
+#include <cstdlib>
 #include <cstring>      /* String function definitions */
 #include <unistd.h>     /* UNIX standard function definitions */
 
@@ -59,7 +59,7 @@ communication_manager::~communication_manager() {
 // returns true on success or false on error
 bool communication_manager::open_session(const char* serialport, int baud) {
   _sp = new serial_port();
-      
+
   if (_sp->open(serialport, baud)) {
     return true;
   }
@@ -77,7 +77,7 @@ void communication_manager::close_session() {
   delete _sp;
   _sp = NULL;
 }
-    
+
 int communication_manager::baudrate() {
   if (_sp) {
     return _sp->baudrate();
@@ -92,23 +92,12 @@ char * communication_manager::port_name() {
   return NULL;
 }
 
-
 bool communication_manager::session_is_open(void) {
   if (_sp) {
     return (_sp->is_open());
   }
   return false;
 }
-    
-/*
-int communication_manager::send(byte_type b) {
-  int n = _sp->send((unsigned char*)(&b), 1);
-  if (n!=1) {
-    return -1;
-  }
-  return 0;
-}
-*/
 
 int communication_manager::send(const uint8_t* str, int len) {
   int n = _sp->send((unsigned char*)str, len);

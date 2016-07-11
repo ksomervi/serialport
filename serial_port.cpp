@@ -22,7 +22,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 //
-// This version of GPL is at 
+// This version of GPL is at
 //       http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
 //
 
@@ -49,7 +49,7 @@ int serial_port::GetPortIndex (const char *name) {
     }
   }
   return (-1);
-}//end 
+}//end
 */
 
 serial_port::serial_port() {
@@ -389,7 +389,7 @@ bool serial_port::is_valid_port (const char *name) {
     }
   }
   return (false);
-}//end 
+}//end
 
 int serial_port::get_port_index (const char *name) {
   // get index into comports
@@ -399,7 +399,7 @@ int serial_port::get_port_index (const char *name) {
     }
   }
   return (-1);
-}//end 
+}//end
 
 char * serial_port::name() {
   return _port_name;
@@ -416,7 +416,7 @@ port_list serial_port::available_ports() {
   char path[128];
 #endif
   int n = 0;
- 
+
   // List the available serial ports
   for (int p=RS232_MIN_PORT_INDEX; p<=RS232_MAX_PORT_INDEX; p++) {
 #ifdef _WIN32
@@ -432,5 +432,4 @@ port_list serial_port::available_ports() {
 
   return available;
 }
-
 

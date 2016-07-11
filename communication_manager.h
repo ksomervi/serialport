@@ -1,5 +1,5 @@
 // Simple class for communicating with a serial port.
-// Copyright (C) 2105  Kevin Somervill
+// Copyright (C) 2016  Kevin Somervill
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,11 +30,6 @@
 
 //#define CM_APP_DEBUG 1
 
-//TODO:
-// - Add poll() function that tests for available characters, but does leaves
-//   them in the buffer.
-// - Add flush() function that clears the selected buffer
-
 class communication_manager {
 
   private:
@@ -52,7 +47,6 @@ class communication_manager {
     bool session_is_open();
     void close_session();
 
-    //int send(const uint8_t b);
     int send(const uint8_t* buf, int len);
     int receive(uint8_t* buf, int len, bool dbg=false);
     int poll(uint8_t* buf, bool dbg=false);
